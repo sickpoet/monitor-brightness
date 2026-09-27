@@ -12,9 +12,20 @@
 - **不常驻**：打开调完叉掉，不驻留后台、不写注册表、不改系统设置
 - **不卡顿**：滑块拖动时不会每个像素都发一次指令，松手后 120ms 才写入
 
+## 直接下载
+
+不想装 Python 的话，去 [Releases](../../releases/latest) 下载 `monitor-brightness.exe`（约 11MB），
+双击就能用，不需要任何运行环境。
+
 ## 用法
 
-双击 `run.bat`，或者：
+**方式一：用打包好的 exe**
+
+双击 `monitor-brightness.exe`。
+
+**方式二：从源码运行**
+
+双击 `run.bat`（会自动挑一个带 tkinter 的 Python），或者：
 
 ```bash
 python brightness.py
@@ -68,12 +79,34 @@ tkinter 滑块
 亮度值在显示器里的量程不一定是 0–100（有的显示器是 0–255），
 本程序内部按 `GetMonitorBrightness` 返回的 min/max 做归一化，对外统一成 0–100 的百分比。
 
-## 打包成 exe（可选）
+## 自己打包 exe
+
+仓库里的 `build_exe.py` 把整个流程包好了：
 
 ```bash
 pip install pyinstaller
-pyinstaller --onefile --noconsole --name monitor-brightness brightness.py
+python build_exe.py
 ```
+
+它会依次做四件事：
+
+1. 从 `brightness.py` 读 `__version__`（版本号只有这一个来源）
+2. 生成 `icon.ico`（`make_icon.py` 程序化绘制，不依赖外部图片素材）
+3. 生成版本资源，让 exe 的右键属性里有版本号和产品名
+4. 调 PyInstaller 打包成单文件、无控制台窗口的 exe
+
+产物在 `dist/monitor-brightness.exe`，约 11MB。
+
+**注意**：必须用带 tkinter 的 Python 跑这个脚本。脚本会自检，缺 tkinter 直接报错，
+不会闷头打出一个跑不起来的 exe。
+
+可选参数：
+
+| 参数 | 作用 |
+|---|---|
+| `--onedir` | 打成目录版。启动约 1 秒、退出秒关；单文件版每次运行要先解压再清理临时目录，慢一些 |
+| `--upx` | 启用 UPX 压缩，约 11MB → 9.2MB。**默认关闭**：只省 1.5MB，但加壳会拉高国内杀软的误报率 |
+| `--keep-console` | 保留控制台窗口，排查启动问题时用 |
 
 ## License
 
