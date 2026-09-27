@@ -22,9 +22,10 @@ except ImportError:  # pragma: no cover
     sys.stderr.write("需要 Pillow：pip install pillow\n")
     raise
 
-# 与 brightness.py 的界面同一套色系
-BG_COLOR = (35, 39, 46, 255)      # 深色圆角底 #23272e
-SUN_COLOR = (255, 201, 60, 255)   # 暖黄太阳 #ffc93c
+# 与 brightness.py 的界面同一套色系（赛博朋克霓虹）
+BG_COLOR = (5, 7, 13, 255)          # 近黑底板 #05070d
+SUN_COLOR = (0, 229, 255, 255)      # 霓虹青太阳 #00e5ff
+RAY_COLOR = (255, 45, 149, 255)     # 霓虹洋红射线 #ff2d95
 
 # ICO 内嵌尺寸。256 是 Vista 以上的大图标，16/32 是任务栏与资源管理器列表
 ICO_SIZES = (16, 20, 24, 32, 48, 64, 128, 256)
@@ -74,12 +75,12 @@ def draw_icon(size):
         x1, y1 = cx + r_in * cos_a, cy + r_in * sin_a
         x2, y2 = cx + r_out * cos_a, cy + r_out * sin_a
 
-        d.line([x1, y1, x2, y2], fill=SUN_COLOR, width=int(width))
+        d.line([x1, y1, x2, y2], fill=RAY_COLOR, width=int(width))
 
         # 两端补圆点做出圆头效果
         half = width / 2.0
         for px, py in ((x1, y1), (x2, y2)):
-            d.ellipse([px - half, py - half, px + half, py + half], fill=SUN_COLOR)
+            d.ellipse([px - half, py - half, px + half, py + half], fill=RAY_COLOR)
 
     return img.resize((size, size), Image.LANCZOS)
 

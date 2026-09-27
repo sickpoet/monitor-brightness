@@ -9,3 +9,4 @@ version_info.txt
 venv/
 .idea/
 .vscode/
+.workbuddy/
